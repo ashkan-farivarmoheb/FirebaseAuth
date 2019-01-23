@@ -1,0 +1,161 @@
+entity Party {
+	kianId String required
+    active Boolean required
+    latinName String
+    firstname String 
+    lastname String 
+    fathername String 
+    nationalCode String
+    gender Gender
+    marriage Marriage
+    millitary MillitaryService
+    death Boolean
+    name String
+    registerDate ZonedDateTime
+    registerNumber Long
+    partyTpe String required
+}
+entity Contact {
+    firstname String required
+    lastname String required
+    accountNumber String required
+    bankName String required
+}
+
+entity Documentt {
+	name String required
+    path String required
+    size Long required
+    uuid String required
+    extension String required
+    updatedAt ZonedDateTime
+    deleted Boolean
+    documentType DocumentType required
+}
+
+entity PartyRelation {
+	fromDate ZonedDateTime required
+    toDate ZonedDateTime
+}
+
+entity PartyIdentifier {
+	value String required
+    identifier Identifier
+}
+
+entity Location {
+	locationType LocationType required
+    value String required
+}
+
+entity Classification {
+	value String required
+	classificationType ClassificationType required
+}
+
+entity PartyPartyRoleType {
+	partyRoleType PartyRoleType
+}
+
+entity PartyAgreement {
+	agreementId Long
+	partyRoleType PartyRoleType
+}
+
+entity Permission {
+	name String
+    partyRoleType PartyRoleType
+}
+
+entity ClassificationPartyRoleType {
+	partyRoleType PartyRoleType
+}
+
+relationship ManyToOne {
+	ClassificationPartyRoleType{classifications} to Classification
+}
+
+relationship ManyToOne {
+	PartyAgreement{party} to Party
+}
+
+relationship ManyToOne {
+	PartyPartyRoleType{partyFrom} to Party,
+    PartyPartyRoleType{partyTo} to Party
+}
+
+relationship ManyToMany {
+	Classification{location} to Location
+}
+
+relationship ManyToMany {
+	Classification{party} to Party
+}
+
+relationship ManyToOne {
+	PartyRelation{partyFrom} to Party,
+    PartyRelation{partyTo} to Party
+}
+
+relationship OneToMany {
+	Party{contacts} to Contact
+}
+
+relationship OneToMany {
+	Party{documents} to Documentt
+}
+
+relationship OneToMany {
+	Party{identifiers} to PartyIdentifier
+}
+
+relationship OneToMany {
+	Party{locations} to Location
+}
+
+enum Gender {
+	MALE, FEMALE
+}
+
+enum Marriage {
+	MARRIED, SINGLE, DIVORCED, WIDOWED
+}
+
+enum MillitaryService {
+	PAYAN_KHEDMAT, TAHSILI, PEZESHKI, NONE
+}
+
+enum DocumentType {
+	BIRTH_CIRTIFICATE, IDENTIFICATION
+}
+
+enum RelationshipType {
+	CODE
+}
+
+enum Identifier {
+	CODE
+}
+
+enum LocationType {
+	EMAIL, TEL, POSTCODE
+}
+
+enum ClassificationType {
+	GROUP
+}
+
+enum PartyRoleType {
+	CODE
+}
+
+// Set pagination options
+paginate Party, Contact, Document, PartyRelation, PartyIdentifier, Location, Classification, PartyPartyRoleType, PartyAgreement, Permission, ClassificationPartyRoleType with infinite-scroll
+
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+// Set an angular suffix
+angularSuffix * with mySuffix
