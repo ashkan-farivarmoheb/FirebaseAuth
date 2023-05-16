@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_FirebaseAuth_1684247297308-pr-trigger-input-set
+  identifier: Build_FirebaseAuth_1684247297308prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_FirebaseAuth_1684247297308
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
